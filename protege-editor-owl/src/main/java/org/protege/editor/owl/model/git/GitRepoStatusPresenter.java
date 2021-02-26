@@ -50,13 +50,16 @@ public class GitRepoStatusPresenter {
     }
 
     private void handleModelManagerEvent(OWLModelManagerChangeEvent event) {
-        switch (event.getType()) {
+        
+        // Quick hack to disable Git status updates (causing performance problems with large ontologies and Git repos)
+        /*switch (event.getType()) {
             case ACTIVE_ONTOLOGY_CHANGED:
             case ONTOLOGY_LOADED:
             case ONTOLOGY_RELOADED:
             case ONTOLOGY_SAVED:
                 updateStatusView();
         }
+        */
     }
 
     public void update() {
@@ -65,6 +68,8 @@ public class GitRepoStatusPresenter {
 
 
     private void updateStatusView() {
+        // Quick hack to disable Git status updates (causing performance problems with large ontologies and Git repos)
+        /*
         try {
             GitRepositoryManager repository = GitRepositoryManager.get(modelManager);
             if (repository.isGitRepositoryPresent()) {
@@ -82,5 +87,6 @@ public class GitRepoStatusPresenter {
         } catch (Exception e) {
             logger.error("[GitRepo] An error occurred: {}", e.getMessage(), e);
         }
+        */
     }
 }

@@ -74,7 +74,8 @@ public class ChildClassExtractor extends OWLAxiomVisitorAdapter {
         }
         else if (!relationships.isEmpty()) {
             // SubClassOf(A ObjectSomeValuesFrom(p B))
-            axiom.getSuperClass().asConjunctSet().stream()
+
+            /*axiom.getSuperClass().asConjunctSet().stream()
                  .filter(ce -> ce instanceof OWLObjectSomeValuesFrom)
                  .map(ce -> ((OWLObjectSomeValuesFrom) ce))
                  .filter(svf -> !svf.getProperty().isAnonymous())
@@ -82,6 +83,18 @@ public class ChildClassExtractor extends OWLAxiomVisitorAdapter {
                  .filter(svf -> relationships.contains(svf.getProperty().asOWLObjectProperty()))
                  .findFirst().ifPresent(c -> {
                 OWLClass child = axiom.getSubClass().asOWLClass();
+                results.add(child);
+                child2RelationshipMap.put(child, c.getProperty());*/
+
+            axiom.getSuperClass().asConjunctSet().stream()
+                 .filter(ce -> ce instanceof OWLObjectSomeValuesFrom)
+                 .map(ce -> ((OWLObjectSomeValuesFrom) ce))
+                 .filter(svf -> !svf.getProperty().isAnonymous())
+                 .filter(svf -> relationships.contains(svf.getProperty().asOWLObjectProperty()))
+                 .filter(svf -> !svf.getFiller().isAnonymous() )
+                 .filter(svf -> !svf.getFiller().equals(currentParentClass))
+                 .findFirst().ifPresent(c -> {
+                OWLClass child = c.getFiller().asOWLClass();
                 results.add(child);
                 child2RelationshipMap.put(child, c.getProperty());
             });

@@ -242,6 +242,27 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
                 StringBuilder sb = new StringBuilder();
                 sb.append("<html><body>");
                 OWLEntity entity = (OWLEntity) obj;
+
+                node.getRelationship().ifPresent(rel -> {
+                    if (rel instanceof OWLObject) {
+                        String relRendering = "<span style=\"font-weight: bold; color: #0079BA;\">" + getOWLModelManager()
+                                .getRendering((OWLObject) rel) + "</span>";
+                        //sb.append("Relation: ");
+                        sb.append(relRendering);
+                        TreeNode parentNode = node.getParent();
+                        if (parentNode instanceof OWLObjectTreeNode) {
+                            String parentRendering = getOWLModelManager().getRendering(((OWLObjectTreeNode) parentNode).getOWLObject());
+                            sb.append("<br><span style=\"padding-left: 20px;\">");
+                            sb.append(parentRendering);
+                            sb.append(" ");
+                            sb.append(relRendering);
+                            sb.append(" ");
+                            sb.append(getOWLModelManager().getRendering(obj));
+                            sb.append("</span><br><br>");
+                        }
+                    }
+                });
+
                 sb.append("<span style=\"font-weight: bold;\">");
                 String rendering = getOWLModelManager().getRendering(entity);
                 sb.append(rendering);
@@ -254,26 +275,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
                 sb.append("<span style=\"color: #a0a0a0;\">");
                 sb.append(entity.getIRI().toString());
                 sb.append("</span>");
-                node.getRelationship().ifPresent(rel -> {
-                    if (rel instanceof OWLObject) {
-                        sb.append("<br><br>");
-                        String relRendering = "<span style=\"font-weight: bold; color: #0079BA;\">" + getOWLModelManager()
-                                .getRendering((OWLObject) rel) + "</span>";
-                        sb.append("Related to parent via ");
-                        sb.append(relRendering);
-                        TreeNode parentNode = node.getParent();
-                        if (parentNode instanceof OWLObjectTreeNode) {
-                            String parentRendering = getOWLModelManager().getRendering(((OWLObjectTreeNode) parentNode).getOWLObject());
-                            sb.append("<br><span style=\"padding-left: 20px;\">");
-                            sb.append(getOWLModelManager().getRendering(obj));
-                            sb.append(" ");
-                            sb.append(relRendering);
-                            sb.append(" ");
-                            sb.append(parentRendering);
-                            sb.append("</span>");
-                        }
-                    }
-                });
+                
                 sb.append("</body></html>");
                 return sb.toString();
             }

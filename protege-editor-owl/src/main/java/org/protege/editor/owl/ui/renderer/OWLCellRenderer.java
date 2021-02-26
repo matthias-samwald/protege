@@ -1248,9 +1248,9 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private static final class IconComponent extends JPanel {
 
-        private static final BasicStroke RELATIONSHIP_STROKE = new BasicStroke(1.5f);
+        private static final BasicStroke RELATIONSHIP_STROKE = new BasicStroke(2f);
 
-        private static final Color UNSPECIFIED_RELATIONSHIP_COLOR = new Color(190, 190, 190);
+        private static final Color UNSPECIFIED_RELATIONSHIP_COLOR = new Color(230, 230, 230);
 
         @Nullable
         private Icon icon;
